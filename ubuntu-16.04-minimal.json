@@ -1,0 +1,63 @@
+{
+    "variables": {
+        "disk_size": "10240"
+    },
+    "builders": [
+        {
+            "name": "xenial64-minimal-libvirt",
+            "type": "qemu",
+            "format": "qcow2",
+            "accelerator": "kvm",
+            "headless": true,
+            "disk_size": "{{user `disk_size`}}",
+            "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04-server-amd64.iso",
+            "iso_checksum": "23e97cd5d4145d4105fbf29878534049",
+            "iso_checksum_type": "md5",
+            "http_directory": "http",
+            "ssh_username": "vagrant",
+            "ssh_password": "vagrant",
+            "ssh_wait_timeout": "10m",
+            "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+            "boot_wait": "2s",
+            "boot_command": [
+                "<esc><wait><f6><esc>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+                "<bs><bs><bs><bs><bs><bs><bs><bs>",
+                "/install/vmlinuz initrd=/install/initrd.gz ",
+                "auto=true noprompt=true ",
+                "url=http://{{.HTTPIP}}:{{.HTTPPort}}/xenial_minimal_vagrant.preseed ",
+                "hostname=vagrant-xenial64 domain= ",
+                "--<enter>"
+            ],
+            "qemuargs": [
+                [
+                    "-m",
+                    "1024M"
+                ]
+            ]
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+            "scripts": [
+                "scripts/update.sh",
+                "scripts/vagrant.sh",
+                "scripts/network.sh",
+                "scripts/shrink.sh"
+            ]
+        }
+    ],
+    "post-processors": [
+        {
+            "keep_input_artifact": false,
+            "output": "output/xenial64-minimal-libvirt.box",
+            "type": "vagrant"
+        }
+    ]
+}

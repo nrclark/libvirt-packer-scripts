@@ -1,0 +1,96 @@
+# ------------------------------------------------------------------------------
+# This preseed file is designed for Ubuntu 16.04 (although it might work
+# with other Ubuntu releases as well). It runs unattended, and generates
+# a minimal Ubuntu Xenial installation with SSH and not much else.
+#
+# The installation wipes out anything that might have been on /dev/sda and
+# repartitions the disk with LVM and the 'atomic' partition scheme.
+#
+# Some values of interest:
+#        Time zone: UTC
+#   Other packages: bash-completion, vim
+#           Kernel: linux-virtual
+#        Main user: vagrant (password: vagrant)
+#         Hostname: vagrant-xenial64
+#           Domain: (none)
+# ------------------------------------------------------------------------------
+
+# Kernel Selection
+d-i base-installer/kernel/override-image string linux-virtual
+
+# Boot Setup
+d-i debian-installer/quiet boolean false
+d-i debian-installer/splash boolean false
+d-i grub-installer/timeout string 2
+
+# Locale Setup
+d-i pkgsel/language-pack-patterns string
+d-i pkgsel/install-language-support boolean false
+
+d-i debian-installer/language string en
+d-i debian-installer/country string US
+d-i debian-installer/locale string en_US.UTF-8
+
+# Keyboard Setup
+d-i console-setup/ask_detect boolean false
+d-i keyboard-configuration/layoutcode string us
+
+# Clock Setup
+d-i time/zone string UTC
+d-i clock-setup/utc-auto boolean true
+d-i clock-setup/utc boolean true
+d-i clock-setup/ntp boolean true
+
+# Network Setup
+# Note that the hostname and domain also need to be passed as
+# arguments on the installer init line.
+d-i netcfg/get_hostname string vagrant-xenial64
+d-i netcfg/get_domain string
+
+# Drive Setup
+d-i grub-installer/only_debian boolean true
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-md/device_remove_md boolean true
+
+#d-i partman-auto/disk string /dev/sda
+d-i partman-auto/method string lvm
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
+
+d-i partman-auto-lvm/new_vg_name string primary
+d-i partman-auto-lvm/guided_size string max
+d-i partman-auto/choose_recipe select atomic
+d-i partman/mount_style select uuid
+d-i partman/choose_partition select finish
+
+# User Setup
+d-i user-setup/allow-password-weak boolean true
+d-i passwd/user-fullname string vagrant
+d-i passwd/username string vagrant
+
+d-i passwd/user-password vagrant vagrant
+d-i passwd/user-password-again vagrant vagrant
+d-i user-setup/allow-password-weak boolean true
+d-i user-setup/encrypt-home boolean false
+
+# Repository Setup
+d-i apt-setup/restricted boolean true
+d-i apt-setup/universe boolean true
+d-i apt-setup/backports boolean true
+
+# Package Setup
+tasksel tasksel/skip-tasks string standard
+tasksel tasksel/first multiselect
+
+d-i hw-detect/load_firmware boolean false
+d-i mirror/http/proxy string
+d-i pkgsel/update-policy select none
+d-i pkgsel/include string openssh-server bash-completion vim linux-firmware
+d-i pkgsel/upgrade select full-upgrade
+
+# Final Setup
+d-i finish-install/reboot_in_progress note
+d-i cdrom-detect/eject boolean true
