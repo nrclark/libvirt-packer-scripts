@@ -20,7 +20,7 @@ To build the Vagrant box, switch into the `ubuntu-16.04` directory and run
 `packer build ubuntu-16.04-minimal.json`. Note that this will take awhile because
 the packer script will try to download the Ubuntu ISO if it doesn't have it cached.
 
-This box is listed on Hashicorp Atlas, and can be found here:
+This box is listed on Hashicorp Atlas, and can be found here:  
 https://atlas.hashicorp.com/nrclark/boxes/xenial64-minimal-libvirt
 
 
