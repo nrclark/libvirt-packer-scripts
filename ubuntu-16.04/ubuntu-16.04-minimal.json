@@ -52,9 +52,10 @@
     ],
     "post-processors": [
         {
+            "type": "vagrant",
             "keep_input_artifact": false,
-            "output": "output/xenial64-minimal-libvirt.box",
-            "type": "vagrant"
+            "vagrantfile_template": "./Vagrantfile.template",
+            "output": "output/xenial64-minimal-libvirt.box"
         }
     ]
 }
