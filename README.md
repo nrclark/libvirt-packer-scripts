@@ -21,6 +21,6 @@ To build the Vagrant box, switch into the `ubuntu-16.04` directory and run
 the packer script will try to download the Ubuntu ISO if it doesn't have it cached.
 
 This box is listed on Hashicorp Atlas, and can be found here:
-(NOTE: The box has been taken down because it has some network issues that haven't been resolved yet. Stay tuned.)
+https://atlas.hashicorp.com/nrclark/boxes/xenial64-minimal-libvirt
 
 
