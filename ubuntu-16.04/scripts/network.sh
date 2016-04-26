@@ -9,12 +9,14 @@ echo "" >> /etc/network/interfaces
 
 echo "auto eth0" >> /etc/network/interfaces
 echo "iface eth0 inet dhcp" >> /etc/network/interfaces
+echo "pre-up sleep 2" >> /etc/network/interfaces
 echo "" >> /etc/network/interfaces
 
 echo "#VAGRANT-BEGIN" >> /etc/network/interfaces
 echo "# This section will be auto-replaced" >> /etc/network/interfaces
 echo "auto eth1" >> /etc/network/interfaces
 echo "iface eth1 inet manual" >> /etc/network/interfaces
+echo "pre-up sleep 2" >> /etc/network/interfaces
 echo "" >> /etc/network/interfaces
 echo "#VAGRANT-END" >> /etc/network/interfaces
 echo "" >> /etc/network/interfaces
