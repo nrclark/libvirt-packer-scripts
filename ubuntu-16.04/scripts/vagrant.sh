@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Store build time
-date > /etc/vagrant_box_build_time
+date > /etc/vagrant_box.build_time
 
 # Set up sudo
 echo 'vagrant ALL=NOPASSWD:ALL' > /etc/sudoers.d/vagrant

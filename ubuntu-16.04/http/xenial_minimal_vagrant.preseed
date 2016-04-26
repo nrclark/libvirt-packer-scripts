@@ -3,12 +3,12 @@
 # with other Ubuntu releases as well). It runs unattended, and generates
 # a minimal Ubuntu Xenial installation with SSH and not much else.
 #
-# The installation wipes out anything that might have been on /dev/sda and
-# repartitions the disk with LVM and the 'atomic' partition scheme.
+# The installation wipes out anything that might have been on the primary disk
+# and repartitions it with LVM and the 'atomic' partition scheme.
 #
 # Some values of interest:
 #        Time zone: UTC
-#   Other packages: bash-completion, vim
+#   Other packages: bash-completion
 #           Kernel: linux-virtual
 #        Main user: vagrant (password: vagrant)
 #         Hostname: vagrant-xenial64
@@ -88,7 +88,7 @@ tasksel tasksel/first multiselect
 d-i hw-detect/load_firmware boolean false
 d-i mirror/http/proxy string
 d-i pkgsel/update-policy select none
-d-i pkgsel/include string openssh-server bash-completion vim linux-firmware
+d-i pkgsel/include string openssh-server bash-completion
 d-i pkgsel/upgrade select full-upgrade
 
 # Final Setup
