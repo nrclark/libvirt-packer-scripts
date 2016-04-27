@@ -88,7 +88,7 @@ tasksel tasksel/first multiselect
 d-i hw-detect/load_firmware boolean false
 d-i mirror/http/proxy string
 d-i pkgsel/update-policy select none
-d-i pkgsel/include string openssh-server bash-completion
+d-i pkgsel/include string openssh-server bash-completion nfs-common rsync sshfs
 d-i pkgsel/upgrade select full-upgrade
 
 # Final Setup
