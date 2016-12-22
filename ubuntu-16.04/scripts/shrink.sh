@@ -26,18 +26,6 @@ find /var/log/apt -maxdepth 1 -type f -exec cp /dev/null {} \;
 find /var/log/fsck -maxdepth 1 -type f -exec cp /dev/null {} \;
 journalctl --vacuum-time=1seconds
 
-# Whiteout root
-count=$(df --sync -kP / | tail -n1  | awk -F ' ' '{print $4}')
-let count--
-dd if=/dev/zero of=/tmp/whitespace bs=1024 count=$count
-rm /tmp/whitespace
-
-# Whiteout /boot
-count=$(df --sync -kP /boot | tail -n1 | awk -F ' ' '{print $4}')
-let count--
-dd if=/dev/zero of=/boot/whitespace bs=1024 count=$count
-rm /boot/whitespace
-
 # Whiteout swap partitions
 set +e
 swapuuid=$(/sbin/blkid -o value -l -s UUID -t TYPE=swap)
@@ -55,9 +43,8 @@ if [ "x${swapuuid}" != "x" ]; then
     /sbin/mkswap -U "${swapuuid}" "${swappart}"
 fi
 
-# Zero out the free space to save space in the final image
-dd if=/dev/zero of=/EMPTY bs=1M  || echo "dd exit code $? is suppressed"
-rm -f /EMPTY
+fstrim -v /boot
+fstrim -v /
 
 # Make sure we wait until all the data is written to disk, otherwise
 # Packer might quite too early before the large files are deleted
