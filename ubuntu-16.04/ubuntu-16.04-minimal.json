@@ -7,6 +7,8 @@
             "name": "xenial64-minimal-libvirt",
             "type": "qemu",
             "format": "qcow2",
+            "disk_discard": "unmap",
+            "disk_interface": "virtio-scsi",
             "accelerator": "kvm",
             "headless": true,
             "disk_size": "{{user `disk_size`}}",
